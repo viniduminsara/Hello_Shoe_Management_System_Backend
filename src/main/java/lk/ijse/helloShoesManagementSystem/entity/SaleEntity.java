@@ -1,6 +1,7 @@
 package lk.ijse.helloShoesManagementSystem.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.helloShoesManagementSystem.entity.enums.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class SaleEntity {
     private Timestamp date;
     private Double total;
     private Double addedPoints;
+    private PaymentMethod paymentMethod;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
