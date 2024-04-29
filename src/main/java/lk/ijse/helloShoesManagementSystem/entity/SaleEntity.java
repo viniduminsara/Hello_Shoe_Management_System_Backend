@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,5 +31,8 @@ public class SaleEntity {
     @ManyToOne
     @JoinColumn(name = "customerId", nullable = false)
     private CustomerEntity customer;
+
+    @OneToMany(mappedBy = "saleEntity")
+    private List<SaleDetailsEntity> saleDetailsEntities;
 
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -26,5 +28,8 @@ public class StockItemEntity {
     @ManyToOne
     @JoinColumn(name = "sizeId", nullable = false)
     private SizeEntity sizeEntity;
+
+    @OneToMany(mappedBy = "stockItemEntity")
+    private List<SaleDetailsEntity> saleDetailsEntities;
 
 }
