@@ -18,7 +18,7 @@ public class ItemEntity {
 
     @Id
     private String itemCode;
-    private String desc;
+    private String itemDesc;
     private String itemPic;
     @Enumerated(EnumType.STRING)
     private Gender gender;

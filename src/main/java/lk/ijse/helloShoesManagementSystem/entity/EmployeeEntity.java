@@ -33,5 +33,6 @@ public class EmployeeEntity {
     private String emergencyContact;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
     private UserEntity user;
 }
