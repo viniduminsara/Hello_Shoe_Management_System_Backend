@@ -25,7 +25,6 @@ public class EmployeeEntity {
     private String civilState;
     private Date dob;
     private Date joinedDate;
-    private String branch;
     private String address;
     private String contact;
     private String email;
