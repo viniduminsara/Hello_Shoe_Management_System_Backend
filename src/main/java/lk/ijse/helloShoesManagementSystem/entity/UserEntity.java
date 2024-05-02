@@ -24,6 +24,10 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employeeId")
+    private EmployeeEntity employeeEntity;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<SaleEntity> saleEntities;
 

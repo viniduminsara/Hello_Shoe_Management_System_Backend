@@ -19,6 +19,7 @@ public class ItemEntity {
     @Id
     private String itemCode;
     private String itemDesc;
+    @Column(columnDefinition = "LONGTEXT")
     private String itemPic;
     @Enumerated(EnumType.STRING)
     private Gender gender;

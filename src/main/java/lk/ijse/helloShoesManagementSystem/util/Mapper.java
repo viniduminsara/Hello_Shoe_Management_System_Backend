@@ -1,7 +1,9 @@
 package lk.ijse.helloShoesManagementSystem.util;
 
 import lk.ijse.helloShoesManagementSystem.dto.CustomerDTO;
+import lk.ijse.helloShoesManagementSystem.dto.EmployeeDTO;
 import lk.ijse.helloShoesManagementSystem.entity.CustomerEntity;
+import lk.ijse.helloShoesManagementSystem.entity.EmployeeEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ public class Mapper {
 
     private final ModelMapper modelMapper;
 
+    //Customer
     public CustomerEntity toCustomerEntity(CustomerDTO customerDTO){
         return modelMapper.map(customerDTO, CustomerEntity.class);
     }
@@ -24,6 +27,19 @@ public class Mapper {
 
     public List<CustomerDTO> toCustomerDTOList(List<CustomerEntity> customerEntities){
         return modelMapper.map(customerEntities, List.class);
+    }
+
+    //Employee
+    public EmployeeEntity toEmployeeEntity(EmployeeDTO employeeDTO){
+        return modelMapper.map(employeeDTO, EmployeeEntity.class);
+    }
+
+    public EmployeeDTO toEmployeeDTO(EmployeeEntity employeeEntity){
+        return modelMapper.map(employeeEntity, EmployeeDTO.class);
+    }
+
+    public List<EmployeeDTO> toEmployeeDTOList(List<EmployeeEntity> employeeEntities){
+        return modelMapper.map(employeeEntities, List.class);
     }
 
 }

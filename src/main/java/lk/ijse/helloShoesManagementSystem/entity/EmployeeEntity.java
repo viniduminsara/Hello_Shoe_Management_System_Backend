@@ -19,10 +19,12 @@ public class EmployeeEntity {
     @Id
     private String employeeId;
     private String name;
+    @Column(columnDefinition = "LONGTEXT")
     private String profilePic;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String civilState;
+    private String designation;
     private Date dob;
     private Date joinedDate;
     private String address;
@@ -31,7 +33,4 @@ public class EmployeeEntity {
     private String guardian;
     private String emergencyContact;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
-    private UserEntity user;
 }
