@@ -17,7 +17,8 @@ public class SizeEntity {
 
     @Id
     private String sizeId;
-    private String sizeDesc;
+    @Column(unique = true)
+    private Integer size;
 
     @OneToMany(mappedBy = "sizeEntity", cascade = CascadeType.ALL)
     private List<StockItemEntity> stockItemEntities;

@@ -18,7 +18,7 @@ public class SupplierEntity {
 
     @Id
     private String supplierId;
-    private String name;
+    private String supplierName;
     @Enumerated(EnumType.STRING)
     private SupplierCategory supplierCategory;
     private String address;
