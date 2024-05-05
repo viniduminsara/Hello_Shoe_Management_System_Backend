@@ -6,7 +6,6 @@ import lk.ijse.helloShoesManagementSystem.dto.InventoryDTO;
 import lk.ijse.helloShoesManagementSystem.entity.CustomerEntity;
 import lk.ijse.helloShoesManagementSystem.entity.EmployeeEntity;
 import lk.ijse.helloShoesManagementSystem.entity.ItemEntity;
-import lk.ijse.helloShoesManagementSystem.entity.StockEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -48,10 +47,6 @@ public class Mapper {
     //Item
     public ItemEntity toItemEntity(InventoryDTO inventoryDTO){
         return modelMapper.map(inventoryDTO, ItemEntity.class);
-    }
-
-    public InventoryDTO toInventoryDTO(ItemEntity itemEntity){
-        return modelMapper.map(itemEntity, InventoryDTO.class);
     }
 
 }
