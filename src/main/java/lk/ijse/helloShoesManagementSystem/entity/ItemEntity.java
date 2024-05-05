@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -27,5 +29,12 @@ public class ItemEntity {
     private OccasionType occasionType;
     @Enumerated(EnumType.STRING)
     private VerityType verityType;
+
+    @OneToMany(mappedBy = "itemEntity", cascade = CascadeType.ALL)
+    private List<ItemSizeEntity> itemSizeEntities;
+
+    @ManyToOne
+    @JoinColumn(name = "supplierId", nullable = false)
+    private SupplierEntity supplierEntity;
 
 }

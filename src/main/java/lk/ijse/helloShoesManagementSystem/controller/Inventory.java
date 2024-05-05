@@ -5,6 +5,7 @@ import lk.ijse.helloShoesManagementSystem.dto.InventoryDTO;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Gender;
 import lk.ijse.helloShoesManagementSystem.entity.enums.OccasionType;
 import lk.ijse.helloShoesManagementSystem.entity.enums.VerityType;
+import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.service.InventoryService;
 import lk.ijse.helloShoesManagementSystem.util.UtilMatters;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +76,19 @@ public class Inventory {
         logger.info("Received request for get All inventories");
         try {
             return ResponseEntity.ok(inventoryService.getAllInventories());
+        }catch (Exception e){
+            logger.error("An exception occurred: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getSelectedInventory(@PathVariable("id") String id){
+        logger.info("Received request for get a inventory");
+        try {
+            return null;
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }catch (Exception e){
             logger.error("An exception occurred: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

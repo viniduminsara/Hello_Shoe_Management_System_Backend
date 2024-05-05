@@ -18,7 +18,7 @@ public class SaleDetailsKey implements Serializable {
     @Column(name = "orderId")
     private String orderId;
 
-    @Column(name = "stockItemId")
-    private String stockItemId;
+    @Column(name = "itemSizeId")
+    private String itemSizeId;
 
 }

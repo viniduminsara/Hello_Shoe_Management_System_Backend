@@ -10,4 +10,6 @@ public interface InventoryService {
 
     List<InventoryDTO> getAllInventories();
 
+    InventoryDTO getSelectedInventory(String id);
+
 }

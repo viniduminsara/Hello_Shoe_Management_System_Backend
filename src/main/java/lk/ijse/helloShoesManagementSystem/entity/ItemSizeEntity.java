@@ -7,29 +7,28 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 
 @Entity
-@Table(name = "stock_item")
-public class StockItemEntity {
+@Table(name = "item_size")
+public class ItemSizeEntity {
 
     @Id
-    private String stockItemId;
+    private String itemSizeId;
     private Integer qty;
     private Double buyingPrice;
     private Double sellingPrice;
 
     @ManyToOne
-    @JoinColumn(name = "stockId", nullable = false)
-    private StockEntity stockEntity;
+    @JoinColumn(name = "itemCode", nullable = false)
+    private ItemEntity itemEntity;
 
     @ManyToOne
     @JoinColumn(name = "sizeId", nullable = false)
     private SizeEntity sizeEntity;
 
-    @OneToMany(mappedBy = "stockItemEntity")
+    @OneToMany(mappedBy = "itemSizeEntity")
     private List<SaleDetailsEntity> saleDetailsEntities;
-
 }

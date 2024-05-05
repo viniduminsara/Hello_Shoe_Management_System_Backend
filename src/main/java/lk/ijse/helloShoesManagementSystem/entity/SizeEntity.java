@@ -20,7 +20,7 @@ public class SizeEntity {
     @Column(unique = true)
     private Integer size;
 
-    @OneToMany(mappedBy = "sizeEntity", cascade = CascadeType.ALL)
-    private List<StockItemEntity> stockItemEntities;
+    @OneToMany(mappedBy = "sizeEntity")
+    private List<ItemSizeEntity> itemSizeEntities;
 
 }

@@ -22,9 +22,9 @@ public class SaleDetailsEntity {
     private SaleEntity saleEntity;
 
     @ManyToOne
-    @MapsId("stockItemId")
-    @JoinColumn(name = "stockItemId")
-    private StockItemEntity stockItemEntity;
+    @MapsId("itemSizeId")
+    @JoinColumn(name = "itemSizeId")
+    private ItemSizeEntity itemSizeEntity;
 
     private Integer qty;
 
