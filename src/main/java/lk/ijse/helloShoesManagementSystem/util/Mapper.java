@@ -3,10 +3,13 @@ package lk.ijse.helloShoesManagementSystem.util;
 import lk.ijse.helloShoesManagementSystem.dto.CustomerDTO;
 import lk.ijse.helloShoesManagementSystem.dto.EmployeeDTO;
 import lk.ijse.helloShoesManagementSystem.dto.InventoryDTO;
+import lk.ijse.helloShoesManagementSystem.dto.SupplierDTO;
 import lk.ijse.helloShoesManagementSystem.entity.CustomerEntity;
 import lk.ijse.helloShoesManagementSystem.entity.EmployeeEntity;
 import lk.ijse.helloShoesManagementSystem.entity.ItemEntity;
+import lk.ijse.helloShoesManagementSystem.entity.SupplierEntity;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +50,20 @@ public class Mapper {
     //Item
     public ItemEntity toItemEntity(InventoryDTO inventoryDTO){
         return modelMapper.map(inventoryDTO, ItemEntity.class);
+    }
+
+    //Supplier
+    public SupplierEntity toSupplierEntity(SupplierDTO supplierDTO){
+        return modelMapper.map(supplierDTO, SupplierEntity.class);
+    }
+
+    public SupplierDTO toSupplierDTO(SupplierEntity supplierEntity){
+        return modelMapper.map(supplierEntity, SupplierDTO.class);
+    }
+
+    public List<SupplierDTO> toSupplierDTOList(List<SupplierEntity> supplierEntities){
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        return modelMapper.map(supplierEntities, List.class);
     }
 
 }
