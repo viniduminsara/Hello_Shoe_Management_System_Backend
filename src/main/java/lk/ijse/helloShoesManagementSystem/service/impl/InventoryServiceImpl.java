@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -66,8 +67,25 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public InventoryDTO getSelectedInventory(String id) {
-//        return itemRepo.getInventoryDTOByItemCode(id);
-        return null;
+        if (!itemRepo.existsById(id)) throw new NotFoundException("Inventory not Found");
+        return convertToInventoryDTO(itemRepo.getReferenceById(id));
+    }
+
+    @Override
+    public void deleteInventory(String id) {
+        if (!itemRepo.existsById(id)) throw new NotFoundException("Inventory not Found");
+        itemRepo.deleteById(id);
+    }
+
+    @Override
+    public void updateInventory(String id, InventoryDTO inventoryDTO) {
+        Optional<ItemEntity> itemEntity = itemRepo.findById(id);
+        if (itemEntity.isEmpty()) throw new NotFoundException("Inventory Not Found");
+        itemEntity.get().setItemDesc(inventoryDTO.getItemDesc());
+        itemEntity.get().setItemPic(inventoryDTO.getItemPic());
+        itemEntity.get().setGender(inventoryDTO.getGender());
+        itemEntity.get().setOccasionType(inventoryDTO.getOccasionType());
+        itemEntity.get().setVerityType(inventoryDTO.getVerityType());
     }
 
     private InventoryDTO convertToInventoryDTO(ItemEntity itemEntity){

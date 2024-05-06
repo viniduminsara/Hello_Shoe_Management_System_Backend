@@ -94,4 +94,52 @@ public class Inventory {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteInventory(@PathVariable("id") String id){
+        logger.info("Received request for get a inventory");
+        try {
+            inventoryService.deleteInventory(id);
+            logger.info("Request processed successfully");
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch (Exception e){
+            logger.error("An exception occurred: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateInventory(@PathVariable("id") String id,
+                                             @Valid
+                                             @RequestParam String itemDesc,
+                                             @RequestPart String itemPic,
+                                             @RequestParam Gender gender,
+                                             @RequestParam OccasionType occasionType,
+                                             @RequestParam VerityType verityType,
+                                             Errors errors){
+        if (errors.hasFieldErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(errors.getFieldErrors().get(0).getDefaultMessage());
+        }
+
+        InventoryDTO inventoryDTO = new InventoryDTO();
+        inventoryDTO.setItemDesc(itemDesc);
+        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
+        inventoryDTO.setGender(gender);
+        inventoryDTO.setOccasionType(occasionType);
+        inventoryDTO.setVerityType(verityType);
+
+        try {
+            inventoryService.updateInventory(id, inventoryDTO);
+            logger.info("Request processed successfully");
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch (Exception e){
+            logger.error("An exception occurred: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

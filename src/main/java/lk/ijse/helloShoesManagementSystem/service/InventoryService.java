@@ -12,4 +12,8 @@ public interface InventoryService {
 
     InventoryDTO getSelectedInventory(String id);
 
+    void deleteInventory(String id);
+
+    void updateInventory(String id, InventoryDTO inventoryDTO);
+
 }
