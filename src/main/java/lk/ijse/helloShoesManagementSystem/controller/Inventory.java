@@ -86,7 +86,7 @@ public class Inventory {
     public ResponseEntity<?> getSelectedInventory(@PathVariable("id") String id){
         logger.info("Received request for get a inventory");
         try {
-            return null;
+            return ResponseEntity.ok(inventoryService.getSelectedInventory(id));
         }catch (NotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }catch (Exception e){

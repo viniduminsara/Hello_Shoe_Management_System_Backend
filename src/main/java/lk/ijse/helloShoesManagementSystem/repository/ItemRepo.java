@@ -1,5 +1,6 @@
 package lk.ijse.helloShoesManagementSystem.repository;
 
+import lk.ijse.helloShoesManagementSystem.dto.InventoryDTO;
 import lk.ijse.helloShoesManagementSystem.entity.ItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

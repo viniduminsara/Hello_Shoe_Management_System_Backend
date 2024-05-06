@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,55 +54,54 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public List<InventoryDTO> getAllInventories() {
-//        List<StockItemEntity> stockItemEntities = stockItemRepo.findAll();
-//        List<InventoryDTO> inventoryDTOs = new ArrayList<>();
-//
-//        for (StockItemEntity stockItemEntity : stockItemEntities) {
-//            inventoryDTOs.add(convertToInventoryDTO(stockItemEntity));
-//        }
+        List<ItemEntity> itemEntities = itemRepo.findAll();
+        List<InventoryDTO> inventoryDTOS = new ArrayList<>();
 
-        return null;
+        for (ItemEntity itemEntity : itemEntities) {
+            inventoryDTOS.add(convertToInventoryDTO(itemEntity));
+        }
+
+        return inventoryDTOS;
     }
 
     @Override
     public InventoryDTO getSelectedInventory(String id) {
-//        itemRepo.getReferenceById(id)
+//        return itemRepo.getInventoryDTOByItemCode(id);
         return null;
     }
 
-//    private InventoryDTO convertToInventoryDTO(StockItemEntity stockItemEntity){
-//        InventoryDTO inventoryDTO = new InventoryDTO();
-//        // Set the existing fields
-//        inventoryDTO.setItemCode(stockItemEntity.getStockEntity().getItemEntity().getItemCode());
-//        inventoryDTO.setItemDesc(stockItemEntity.getStockEntity().getItemEntity().getItemDesc());
-//        inventoryDTO.setItemPic(stockItemEntity.getStockEntity().getItemEntity().getItemPic());
-//        inventoryDTO.setGender(stockItemEntity.getStockEntity().getItemEntity().getGender());
-//        inventoryDTO.setOccasionType(stockItemEntity.getStockEntity().getItemEntity().getOccasionType());
-//        inventoryDTO.setVerityType(stockItemEntity.getStockEntity().getItemEntity().getVerityType());
-//        inventoryDTO.setQty(stockItemEntity.getQty());
-//        inventoryDTO.setSize(stockItemEntity.getSizeEntity().getSize());
-//        inventoryDTO.setSupplierId(stockItemEntity.getStockEntity().getSupplierEntity().getSupplierId());
-//        inventoryDTO.setSupplierName(stockItemEntity.getStockEntity().getSupplierEntity().getSupplierName());
-//        inventoryDTO.setSellingPrice(stockItemEntity.getSellingPrice());
-//        inventoryDTO.setBuyingPrice(stockItemEntity.getBuyingPrice());
-//
-//        // Calculate profit and profit margin
-//        double profit = stockItemEntity.getSellingPrice() - stockItemEntity.getBuyingPrice();
-//        inventoryDTO.setProfit(profit);
-//        double profitMargin = (profit / stockItemEntity.getSellingPrice()) * 100;
-//        inventoryDTO.setProfitMargin(profitMargin);
-//
-//        // Calculate status
-//        if (stockItemEntity.getQty() < 5) {
-//            inventoryDTO.setStatus("low");
-//        } else if (stockItemEntity.getQty() > 5) {
-//            inventoryDTO.setStatus("available");
-//        } else {
-//            inventoryDTO.setStatus("not available");
-//        }
-//
-//        return inventoryDTO;
-//    }
+    private InventoryDTO convertToInventoryDTO(ItemEntity itemEntity){
+        InventoryDTO inventoryDTO = new InventoryDTO();
+
+        inventoryDTO.setItemCode(itemEntity.getItemCode());
+        inventoryDTO.setItemDesc(itemEntity.getItemDesc());
+        inventoryDTO.setItemPic(itemEntity.getItemPic());
+        inventoryDTO.setGender(itemEntity.getGender());
+        inventoryDTO.setOccasionType(itemEntity.getOccasionType());
+        inventoryDTO.setVerityType(itemEntity.getVerityType());
+
+        inventoryDTO.setQty(itemEntity.getItemSizeEntities().get(0).getQty());
+        inventoryDTO.setSize(itemEntity.getItemSizeEntities().get(0).getSizeEntity().getSize());
+        inventoryDTO.setSupplierId(itemEntity.getSupplierEntity().getSupplierId());
+        inventoryDTO.setSupplierName(itemEntity.getSupplierEntity().getSupplierName());
+
+        double selling = itemEntity.getItemSizeEntities().get(0).getSellingPrice();
+        double buying = itemEntity.getItemSizeEntities().get(0).getBuyingPrice();
+
+        inventoryDTO.setSellingPrice(itemEntity.getItemSizeEntities().get(0).getSellingPrice());
+        inventoryDTO.setBuyingPrice(itemEntity.getItemSizeEntities().get(0).getBuyingPrice());
+        inventoryDTO.setProfit(selling - buying);
+        inventoryDTO.setProfitMargin((selling - buying)/selling * 100);
+        if (itemEntity.getItemSizeEntities().get(0).getQty() > 5){
+            inventoryDTO.setStatus("Available");
+        }else if (itemEntity.getItemSizeEntities().get(0).getQty() < 5){
+            inventoryDTO.setStatus("Low");
+        }else {
+            inventoryDTO.setStatus("Not Available");
+        }
+
+        return inventoryDTO;
+    }
 
     private String generateItemCode(InventoryDTO inventoryDTO){
         StringBuilder itemCodeBuilder = new StringBuilder();
