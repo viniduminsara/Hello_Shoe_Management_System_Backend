@@ -1,13 +1,13 @@
 package lk.ijse.helloShoesManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 
 @Entity
 @Table(name = "sale_details")
@@ -19,13 +19,17 @@ public class SaleDetailsEntity {
     @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "orderId")
+    @JsonBackReference
     private SaleEntity saleEntity;
 
     @ManyToOne
     @MapsId("itemSizeId")
     @JoinColumn(name = "itemSizeId")
+    @JsonBackReference
     private ItemSizeEntity itemSizeEntity;
 
     private Integer qty;
+
+    private Double unitPrice;
 
 }

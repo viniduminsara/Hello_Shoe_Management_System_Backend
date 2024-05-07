@@ -1,16 +1,16 @@
 package lk.ijse.helloShoesManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 
 @Entity
 @Table(name = "user")
@@ -29,6 +29,7 @@ public class UserEntity {
     private EmployeeEntity employeeEntity;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<SaleEntity> saleEntities;
 
 }

@@ -1,18 +1,19 @@
 package lk.ijse.helloShoesManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Gender;
 import lk.ijse.helloShoesManagementSystem.entity.enums.OccasionType;
 import lk.ijse.helloShoesManagementSystem.entity.enums.VerityType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 
 @Entity
 @Table(name = "item")
@@ -31,9 +32,11 @@ public class ItemEntity {
     private VerityType verityType;
 
     @OneToMany(mappedBy = "itemEntity", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ItemSizeEntity> itemSizeEntities;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "supplierId", nullable = false)
     private SupplierEntity supplierEntity;
 

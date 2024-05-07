@@ -1,15 +1,16 @@
 package lk.ijse.helloShoesManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 
 @Entity
 @Table(name = "item_size")
@@ -22,13 +23,16 @@ public class ItemSizeEntity {
     private Double sellingPrice;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "itemCode", nullable = false)
     private ItemEntity itemEntity;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "sizeId", nullable = false)
     private SizeEntity sizeEntity;
 
     @OneToMany(mappedBy = "itemSizeEntity")
+    @JsonManagedReference
     private List<SaleDetailsEntity> saleDetailsEntities;
 }
