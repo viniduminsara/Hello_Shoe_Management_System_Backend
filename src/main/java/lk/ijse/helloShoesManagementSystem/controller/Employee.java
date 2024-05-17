@@ -148,8 +148,6 @@ public class Employee {
                     .body(errors.getFieldErrors().get(0).getDefaultMessage());
         }
 
-//        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePicture));
-
         try {
             employeeService.updateEmployee(id, employeeDTO);
             logger.info("Request processed successfully");
