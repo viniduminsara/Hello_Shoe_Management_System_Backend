@@ -50,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Optional<EmployeeEntity> employeeEntity = employeeRepo.findById(id);
         if (employeeEntity.isEmpty()) throw new NotFoundException("Employee not found");
         employeeEntity.get().setName(employeeDTO.getName());
-        employeeEntity.get().setProfilePic(employeeDTO.getProfilePic());
+//        employeeEntity.get().setProfilePic(employeeDTO.getProfilePic());
         employeeEntity.get().setGender(employeeDTO.getGender());
         employeeEntity.get().setCivilState(employeeDTO.getCivilState());
         employeeEntity.get().setDesignation(employeeDTO.getDesignation());

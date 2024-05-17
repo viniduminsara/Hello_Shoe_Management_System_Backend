@@ -20,7 +20,7 @@ public class EmployeeDTO {
     @NotBlank(message = "Customer name cannot be blank")
     private String name;
 
-    @NotBlank(message = "Profile picture cannot be blank")
+    @Null
     private String profilePic;
 
     @NotNull(message = "Gender cannot be null")

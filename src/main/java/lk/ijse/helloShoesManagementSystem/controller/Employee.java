@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 
@@ -30,50 +31,72 @@ public class Employee {
         return "OK";
     }
 
+//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<?> saveEmployee(@Valid
+//                                          @RequestParam String name,
+//                                          @RequestPart MultipartFile profilePic,
+//                                          @RequestParam Gender gender,
+//                                          @RequestParam String civilState,
+//                                          @RequestParam String designation,
+//                                          @RequestParam Date dob,
+//                                          @RequestParam Date joinedDate,
+//                                          @RequestParam String address,
+//                                          @RequestParam String contact,
+//                                          @RequestParam String email,
+//                                          @RequestParam String guardian,
+//                                          @RequestParam String emergencyContact,
+//                                          Errors errors){
+//        logger.info("Received request for save a employee");
+//        if (errors.hasFieldErrors()){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(errors.getFieldErrors().get(0).getDefaultMessage());
+//        }
+//
+//        EmployeeDTO employeeDTO = new EmployeeDTO();
+//        employeeDTO.setName(name);
+//        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePic));
+//        employeeDTO.setGender(gender);
+//        employeeDTO.setCivilState(civilState);
+//        employeeDTO.setDesignation(designation);
+//        employeeDTO.setDob(dob);
+//        employeeDTO.setJoinedDate(joinedDate);
+//        employeeDTO.setAddress(address);
+//        employeeDTO.setContact(contact);
+//        employeeDTO.setEmail(email);
+//        employeeDTO.setGuardian(guardian);
+//        employeeDTO.setEmergencyContact(emergencyContact);
+//
+//        try {
+//            employeeService.saveEmployee(employeeDTO);
+//            logger.info("Request processed successfully");
+//            return ResponseEntity.status(HttpStatus.CREATED).build();
+//        }catch (Exception e){
+//            logger.error("An exception occurred: {}", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//
+//    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> saveEmployee(@Valid
-                                          @RequestParam String name,
-                                          @RequestPart String profilePic,
-                                          @RequestParam Gender gender,
-                                          @RequestParam String civilState,
-                                          @RequestParam String designation,
-                                          @RequestParam Date dob,
-                                          @RequestParam Date joinedDate,
-                                          @RequestParam String address,
-                                          @RequestParam String contact,
-                                          @RequestParam String email,
-                                          @RequestParam String guardian,
-                                          @RequestParam String emergencyContact,
-                                          Errors errors){
+    public ResponseEntity<?> saveEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,
+                                          @RequestPart("profilePicture") MultipartFile profilePicture,
+                                          Errors errors) {
         logger.info("Received request for save a employee");
-        if (errors.hasFieldErrors()){
+        if (errors.hasFieldErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(errors.getFieldErrors().get(0).getDefaultMessage());
         }
 
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setName(name);
-        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePic));
-        employeeDTO.setGender(gender);
-        employeeDTO.setCivilState(civilState);
-        employeeDTO.setDesignation(designation);
-        employeeDTO.setDob(dob);
-        employeeDTO.setJoinedDate(joinedDate);
-        employeeDTO.setAddress(address);
-        employeeDTO.setContact(contact);
-        employeeDTO.setEmail(email);
-        employeeDTO.setGuardian(guardian);
-        employeeDTO.setEmergencyContact(emergencyContact);
+        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePicture));
 
         try {
             employeeService.saveEmployee(employeeDTO);
             logger.info("Request processed successfully");
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("An exception occurred: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -116,40 +139,16 @@ public class Employee {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateEmployee(@Valid
-                                          @RequestParam String name,
-                                          @RequestPart String profilePic,
-                                          @RequestParam Gender gender,
-                                          @RequestParam String civilState,
-                                          @RequestParam String designation,
-                                          @RequestParam Date dob,
-                                          @RequestParam Date joinedDate,
-                                          @RequestParam String address,
-                                          @RequestParam String contact,
-                                          @RequestParam String email,
-                                          @RequestParam String guardian,
-                                          @RequestParam String emergencyContact,
-                                          @PathVariable String id,
-                                          Errors errors){
+    public ResponseEntity<?> updateEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,
+                                            @PathVariable String id,
+                                            Errors errors){
         logger.info("Received request for update a employee");
         if (errors.hasFieldErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(errors.getFieldErrors().get(0).getDefaultMessage());
         }
 
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setName(name);
-        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePic));
-        employeeDTO.setGender(gender);
-        employeeDTO.setCivilState(civilState);
-        employeeDTO.setDesignation(designation);
-        employeeDTO.setDob(dob);
-        employeeDTO.setJoinedDate(joinedDate);
-        employeeDTO.setAddress(address);
-        employeeDTO.setContact(contact);
-        employeeDTO.setEmail(email);
-        employeeDTO.setGuardian(guardian);
-        employeeDTO.setEmergencyContact(emergencyContact);
+//        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePicture));
 
         try {
             employeeService.updateEmployee(id, employeeDTO);

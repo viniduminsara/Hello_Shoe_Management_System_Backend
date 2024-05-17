@@ -51,7 +51,7 @@ public class Inventory {
 
         InventoryDTO inventoryDTO = new InventoryDTO();
         inventoryDTO.setItemDesc(itemDesc);
-        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
+//        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
         inventoryDTO.setGender(gender);
         inventoryDTO.setOccasionType(occasionType);
         inventoryDTO.setVerityType(verityType);
@@ -126,7 +126,7 @@ public class Inventory {
 
         InventoryDTO inventoryDTO = new InventoryDTO();
         inventoryDTO.setItemDesc(itemDesc);
-        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
+//        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
         inventoryDTO.setGender(gender);
         inventoryDTO.setOccasionType(occasionType);
         inventoryDTO.setVerityType(verityType);
