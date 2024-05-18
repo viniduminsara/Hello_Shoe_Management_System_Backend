@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -22,7 +24,7 @@ public class InventoryDTO {
     @NotBlank(message = "item description cannot be blank")
     private String itemDesc;
 
-    @NotBlank(message = "Item picture cannot be blank")
+    @Null
     private String itemPic;
 
     @NotNull(message = "Gender cannot be null")
@@ -34,11 +36,14 @@ public class InventoryDTO {
     @NotNull(message = "Verity type cannot be null")
     private VerityType verityType;
 
-    @NotNull(message = "Quantity cannot be null")
-    private Integer qty;
+    @NotNull(message = "item sizes cannot be null")
+    private List<ItemSizeDTO> itemSizeDTOS;
 
-    @NotNull(message = "Size cannot be null")
-    private Integer size;
+//    @NotNull(message = "Quantity cannot be null")
+//    private Integer qty;
+//
+//    @NotNull(message = "Size cannot be null")
+//    private Integer size;
 
     @NotBlank(message = "Item picture cannot be blank")
     private String supplierId;

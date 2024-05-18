@@ -19,8 +19,6 @@ public class ItemSizeEntity {
     @Id
     private String itemSizeId;
     private Integer qty;
-    private Double buyingPrice;
-    private Double sellingPrice;
 
     @ManyToOne
     @JsonBackReference

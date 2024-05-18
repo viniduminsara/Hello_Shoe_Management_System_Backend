@@ -1,6 +1,7 @@
 package lk.ijse.helloShoesManagementSystem.service.impl;
 
 import lk.ijse.helloShoesManagementSystem.dto.InventoryDTO;
+import lk.ijse.helloShoesManagementSystem.dto.ItemSizeDTO;
 import lk.ijse.helloShoesManagementSystem.entity.ItemEntity;
 import lk.ijse.helloShoesManagementSystem.entity.ItemSizeEntity;
 import lk.ijse.helloShoesManagementSystem.entity.SizeEntity;
@@ -41,16 +42,16 @@ public class InventoryServiceImpl implements InventoryService {
         itemRepo.save(itemEntity);
 
         //item size save
-        ItemSizeEntity itemSizeEntity = new ItemSizeEntity();
-        itemSizeEntity.setItemSizeId(UUID.randomUUID().toString());
-        itemSizeEntity.setQty(inventoryDTO.getQty());
-        itemSizeEntity.setBuyingPrice(inventoryDTO.getBuyingPrice());
-        itemSizeEntity.setSellingPrice(inventoryDTO.getSellingPrice());
-        itemSizeEntity.setItemEntity(itemEntity);
-        SizeEntity sizeEntity = sizeRepo.findBySize(inventoryDTO.getSize())
-                .orElseThrow(() -> new NotFoundException("Size not found"));
-        itemSizeEntity.setSizeEntity(sizeEntity);
-        itemSizeRepo.save(itemSizeEntity);
+        for (ItemSizeDTO itemSizeDTO : inventoryDTO.getItemSizeDTOS()) {
+            ItemSizeEntity itemSizeEntity = new ItemSizeEntity();
+            itemSizeEntity.setItemSizeId(UUID.randomUUID().toString());
+            itemSizeEntity.setQty(itemSizeDTO.getQty());
+            itemSizeEntity.setItemEntity(itemEntity);
+            SizeEntity sizeEntity = sizeRepo.findBySize(itemSizeDTO.getSize())
+                    .orElseThrow(() -> new NotFoundException("Size not found"));
+            itemSizeEntity.setSizeEntity(sizeEntity);
+            itemSizeRepo.save(itemSizeEntity);
+        }
     }
 
     @Override
@@ -97,26 +98,51 @@ public class InventoryServiceImpl implements InventoryService {
         inventoryDTO.setGender(itemEntity.getGender());
         inventoryDTO.setOccasionType(itemEntity.getOccasionType());
         inventoryDTO.setVerityType(itemEntity.getVerityType());
+        inventoryDTO.setSellingPrice(itemEntity.getSellingPrice());
+        inventoryDTO.setBuyingPrice(itemEntity.getBuyingPrice());
 
-        inventoryDTO.setQty(itemEntity.getItemSizeEntities().get(0).getQty());
-        inventoryDTO.setSize(itemEntity.getItemSizeEntities().get(0).getSizeEntity().getSize());
+        int totalQty = 0;
+        List<ItemSizeDTO> itemSizeDTOS = new ArrayList<>();
+        for (ItemSizeEntity itemSizeEntity : itemEntity.getItemSizeEntities()) {
+            ItemSizeDTO itemSizeDTO = new ItemSizeDTO();
+            itemSizeDTO.setSize(itemSizeEntity.getSizeEntity().getSize());
+            itemSizeDTO.setQty(itemSizeEntity.getQty());
+            totalQty += itemSizeEntity.getQty();
+
+            itemSizeDTOS.add(itemSizeDTO);
+        }
+
+        inventoryDTO.setItemSizeDTOS(itemSizeDTOS);
         inventoryDTO.setSupplierId(itemEntity.getSupplierEntity().getSupplierId());
         inventoryDTO.setSupplierName(itemEntity.getSupplierEntity().getSupplierName());
-
-        double selling = itemEntity.getItemSizeEntities().get(0).getSellingPrice();
-        double buying = itemEntity.getItemSizeEntities().get(0).getBuyingPrice();
-
-        inventoryDTO.setSellingPrice(itemEntity.getItemSizeEntities().get(0).getSellingPrice());
-        inventoryDTO.setBuyingPrice(itemEntity.getItemSizeEntities().get(0).getBuyingPrice());
-        inventoryDTO.setProfit(selling - buying);
-        inventoryDTO.setProfitMargin((selling - buying)/selling * 100);
-        if (itemEntity.getItemSizeEntities().get(0).getQty() > 5){
+        inventoryDTO.setProfit(itemEntity.getSellingPrice() - itemEntity.getBuyingPrice());
+        inventoryDTO.setProfitMargin((itemEntity.getSellingPrice() - itemEntity.getBuyingPrice())/itemEntity.getSellingPrice() * 100);
+        if (totalQty > 10){
             inventoryDTO.setStatus("Available");
-        }else if (itemEntity.getItemSizeEntities().get(0).getQty() < 5){
+        }else if (totalQty <= 5){
             inventoryDTO.setStatus("Low");
         }else {
             inventoryDTO.setStatus("Not Available");
         }
+//        inventoryDTO.setQty(itemEntity.getItemSizeEntities().get(0).getQty());
+//        inventoryDTO.setSize(itemEntity.getItemSizeEntities().get(0).getSizeEntity().getSize());
+//        inventoryDTO.setSupplierId(itemEntity.getSupplierEntity().getSupplierId());
+//        inventoryDTO.setSupplierName(itemEntity.getSupplierEntity().getSupplierName());
+//
+//        double selling = itemEntity.getItemSizeEntities().get(0).getSellingPrice();
+//        double buying = itemEntity.getItemSizeEntities().get(0).getBuyingPrice();
+//
+//        inventoryDTO.setSellingPrice(itemEntity.getItemSizeEntities().get(0).getSellingPrice());
+//        inventoryDTO.setBuyingPrice(itemEntity.getItemSizeEntities().get(0).getBuyingPrice());
+//        inventoryDTO.setProfit(selling - buying);
+//        inventoryDTO.setProfitMargin((selling - buying)/selling * 100);
+//        if (itemEntity.getItemSizeEntities().get(0).getQty() > 5){
+//            inventoryDTO.setStatus("Available");
+//        }else if (itemEntity.getItemSizeEntities().get(0).getQty() < 5){
+//            inventoryDTO.setStatus("Low");
+//        }else {
+//            inventoryDTO.setStatus("Not Available");
+//        }
 
         return inventoryDTO;
     }
