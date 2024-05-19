@@ -136,24 +136,13 @@ public class Inventory {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateInventory(@PathVariable("id") String id,
-                                             @Valid
-                                             @RequestParam String itemDesc,
-                                             @RequestPart String itemPic,
-                                             @RequestParam Gender gender,
-                                             @RequestParam OccasionType occasionType,
-                                             @RequestParam VerityType verityType,
+                                             @Valid @ModelAttribute("inventory") InventoryDTO inventoryDTO,
                                              Errors errors){
+        logger.info("Received request for update a inventory");
         if (errors.hasFieldErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(errors.getFieldErrors().get(0).getDefaultMessage());
         }
-
-        InventoryDTO inventoryDTO = new InventoryDTO();
-        inventoryDTO.setItemDesc(itemDesc);
-//        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
-        inventoryDTO.setGender(gender);
-        inventoryDTO.setOccasionType(occasionType);
-        inventoryDTO.setVerityType(verityType);
 
         try {
             inventoryService.updateInventory(id, inventoryDTO);

@@ -15,10 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -80,14 +78,43 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void updateInventory(String id, InventoryDTO inventoryDTO) {
-        Optional<ItemEntity> itemEntity = itemRepo.findById(id);
-        if (itemEntity.isEmpty()) throw new NotFoundException("Inventory Not Found");
-        itemEntity.get().setItemDesc(inventoryDTO.getItemDesc());
-        itemEntity.get().setItemPic(inventoryDTO.getItemPic());
-        itemEntity.get().setGender(inventoryDTO.getGender());
-        itemEntity.get().setOccasionType(inventoryDTO.getOccasionType());
-        itemEntity.get().setVerityType(inventoryDTO.getVerityType());
+        Optional<ItemEntity> itemEntityOptional = itemRepo.findById(id);
+        if (itemEntityOptional.isEmpty()) throw new NotFoundException("Inventory Not Found");
+
+        ItemEntity itemEntity = itemEntityOptional.get();
+
+        // Update the basic fields of ItemEntity
+        itemEntity.setItemDesc(inventoryDTO.getItemDesc());
+        itemEntity.setGender(inventoryDTO.getGender());
+        itemEntity.setOccasionType(inventoryDTO.getOccasionType());
+        itemEntity.setVerityType(inventoryDTO.getVerityType());
+
+        // Create a map of size to ItemSizeEntity for easy lookup
+        Map<Integer, ItemSizeEntity> existingSizeMap = itemEntity.getItemSizeEntities().stream()
+                .collect(Collectors.toMap(itemSize -> itemSize.getSizeEntity().getSize(), itemSize -> itemSize));
+
+        // Iterate over the incoming DTOs and update existing or add new records
+        for (ItemSizeDTO dto : inventoryDTO.getItemSizeDTOS()) {
+            if (existingSizeMap.containsKey(dto.getSize())) {
+                // Update existing record
+                ItemSizeEntity existingItemSize = existingSizeMap.get(dto.getSize());
+                existingItemSize.setQty(dto.getQty());
+            }
+        }
+
+        // Remove records that are no longer in the incoming DTOs
+        List<ItemSizeEntity> toRemove = itemEntity.getItemSizeEntities().stream()
+                .filter(itemSize -> inventoryDTO.getItemSizeDTOS().stream()
+                        .noneMatch(dto -> dto.getSize().equals(itemSize.getSizeEntity().getSize())))
+                .collect(Collectors.toList());
+
+        itemEntity.getItemSizeEntities().removeAll(toRemove);
+
+        // Save the updated ItemEntity
+        itemRepo.save(itemEntity);
     }
+
+
 
     private InventoryDTO convertToInventoryDTO(ItemEntity itemEntity){
         InventoryDTO inventoryDTO = new InventoryDTO();
@@ -117,12 +144,12 @@ public class InventoryServiceImpl implements InventoryService {
         inventoryDTO.setSupplierName(itemEntity.getSupplierEntity().getSupplierName());
         inventoryDTO.setProfit(itemEntity.getSellingPrice() - itemEntity.getBuyingPrice());
         inventoryDTO.setProfitMargin((itemEntity.getSellingPrice() - itemEntity.getBuyingPrice())/itemEntity.getSellingPrice() * 100);
-        if (totalQty > 10){
+        if ((totalQty / 7) > 10){
             inventoryDTO.setStatus("Available");
-        }else if (totalQty <= 5){
-            inventoryDTO.setStatus("Low");
-        }else {
+        }else if (totalQty == 0){
             inventoryDTO.setStatus("Not Available");
+        } else if ((totalQty / 7) <= 5){
+            inventoryDTO.setStatus("Low");
         }
 //        inventoryDTO.setQty(itemEntity.getItemSizeEntities().get(0).getQty());
 //        inventoryDTO.setSize(itemEntity.getItemSizeEntities().get(0).getSizeEntity().getSize());
