@@ -151,25 +151,6 @@ public class InventoryServiceImpl implements InventoryService {
         } else if ((totalQty / 7) <= 5){
             inventoryDTO.setStatus("Low");
         }
-//        inventoryDTO.setQty(itemEntity.getItemSizeEntities().get(0).getQty());
-//        inventoryDTO.setSize(itemEntity.getItemSizeEntities().get(0).getSizeEntity().getSize());
-//        inventoryDTO.setSupplierId(itemEntity.getSupplierEntity().getSupplierId());
-//        inventoryDTO.setSupplierName(itemEntity.getSupplierEntity().getSupplierName());
-//
-//        double selling = itemEntity.getItemSizeEntities().get(0).getSellingPrice();
-//        double buying = itemEntity.getItemSizeEntities().get(0).getBuyingPrice();
-//
-//        inventoryDTO.setSellingPrice(itemEntity.getItemSizeEntities().get(0).getSellingPrice());
-//        inventoryDTO.setBuyingPrice(itemEntity.getItemSizeEntities().get(0).getBuyingPrice());
-//        inventoryDTO.setProfit(selling - buying);
-//        inventoryDTO.setProfitMargin((selling - buying)/selling * 100);
-//        if (itemEntity.getItemSizeEntities().get(0).getQty() > 5){
-//            inventoryDTO.setStatus("Available");
-//        }else if (itemEntity.getItemSizeEntities().get(0).getQty() < 5){
-//            inventoryDTO.setStatus("Low");
-//        }else {
-//            inventoryDTO.setStatus("Not Available");
-//        }
 
         return inventoryDTO;
     }
