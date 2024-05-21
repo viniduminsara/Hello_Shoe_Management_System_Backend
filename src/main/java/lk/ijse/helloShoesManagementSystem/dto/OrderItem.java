@@ -16,7 +16,7 @@ public class OrderItem {
     private String itemCode;
 
     @NotBlank(message = "Size Id cannot be blank")
-    private String sizeId;
+    private Integer size;
 
     @NotNull(message = "Unit price cannot be null")
     private Double unitPrice;

@@ -24,6 +24,7 @@ public class SaleServiceImpl implements SaleService {
     private final CustomerRepo customerRepo;
     private final ItemSizeRepo itemSizeRepo;
     private final SaleDetailsRepo saleDetailsRepo;
+    private final SizeRepo sizeRepo;
     private final Mapper mapper;
 
     @Override
@@ -41,11 +42,15 @@ public class SaleServiceImpl implements SaleService {
 
         List<OrderItem> orderItems = saleDTO.getOrderItems();
         for (OrderItem orderItem : orderItems) {
-            ItemSizeEntity itemSizeEntity = itemSizeRepo.findByItemCodeAndSizeId(orderItem.getItemCode(), orderItem.getSizeId())
+            SizeEntity sizeEntity = sizeRepo.findBySize(orderItem.getSize())
+                    .orElseThrow(() -> new NotFoundException("Size not found"));
+            ItemSizeEntity itemSizeEntity = itemSizeRepo.findByItemCodeAndSizeId(orderItem.getItemCode(), sizeEntity.getSizeId())
                     .orElseThrow(() -> new NotFoundException("Item not found"));
 
             SaleDetailsEntity saleDetailsEntity = getSaleDetailsEntity(orderItem, saleEntity, itemSizeEntity);
             saleDetailsRepo.save(saleDetailsEntity);
+
+            itemSizeEntity.setQty(itemSizeEntity.getQty() - orderItem.getItemQty());
         }
 
     }

@@ -31,47 +31,6 @@ public class Inventory {
         return "OK";
     }
 
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<?> saveItem(@Valid
-//                                      @RequestParam String itemDesc,
-//                                      @RequestPart String itemPic,
-//                                      @RequestParam Gender gender,
-//                                      @RequestParam OccasionType occasionType,
-//                                      @RequestParam VerityType verityType,
-//                                      @RequestParam Integer qty,
-//                                      @RequestParam Integer size,
-//                                      @RequestParam String supplierId,
-//                                      @RequestParam Double sellingPrice,
-//                                      @RequestParam Double buyingPrice,
-//                                      Errors errors){
-//        logger.info("Received request for save a item");
-//        if (errors.hasFieldErrors()){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                    .body(errors.getFieldErrors().get(0).getDefaultMessage());
-//        }
-//
-//        InventoryDTO inventoryDTO = new InventoryDTO();
-//        inventoryDTO.setItemDesc(itemDesc);
-////        inventoryDTO.setItemPic(UtilMatters.convertBase64(itemPic));
-//        inventoryDTO.setGender(gender);
-//        inventoryDTO.setOccasionType(occasionType);
-//        inventoryDTO.setVerityType(verityType);
-//        inventoryDTO.setQty(qty);
-//        inventoryDTO.setSize(size);
-//        inventoryDTO.setSupplierId(supplierId);
-//        inventoryDTO.setSellingPrice(sellingPrice);
-//        inventoryDTO.setBuyingPrice(buyingPrice);
-//
-//        try {
-//            inventoryService.saveInventory(inventoryDTO);
-//            logger.info("Request processed successfully");
-//            return ResponseEntity.status(HttpStatus.CREATED).build();
-//        }catch (Exception e){
-//            logger.error("An exception occurred: {}", e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> saveItem(@Valid @ModelAttribute("inventory") InventoryDTO inventoryDTO,
                                       @RequestPart("itemPicture") MultipartFile itemPicture,
