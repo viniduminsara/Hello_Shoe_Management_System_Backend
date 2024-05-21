@@ -144,12 +144,13 @@ public class InventoryServiceImpl implements InventoryService {
         inventoryDTO.setSupplierName(itemEntity.getSupplierEntity().getSupplierName());
         inventoryDTO.setProfit(itemEntity.getSellingPrice() - itemEntity.getBuyingPrice());
         inventoryDTO.setProfitMargin((itemEntity.getSellingPrice() - itemEntity.getBuyingPrice())/itemEntity.getSellingPrice() * 100);
-        if ((totalQty / 7) > 10){
+        double averageQty = (double) totalQty / 7;
+        if (averageQty > 10) {
             inventoryDTO.setStatus("Available");
-        }else if (totalQty == 0){
-            inventoryDTO.setStatus("Not Available");
-        } else if ((totalQty / 7) <= 5){
+        } else if (averageQty >= 1) {
             inventoryDTO.setStatus("Low");
+        } else {
+            inventoryDTO.setStatus("Not Available");
         }
 
         return inventoryDTO;
