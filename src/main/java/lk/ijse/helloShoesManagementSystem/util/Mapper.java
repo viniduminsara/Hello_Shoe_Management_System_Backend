@@ -65,4 +65,12 @@ public class Mapper {
         return modelMapper.map(saleDTO, SaleEntity.class);
     }
 
+    //User
+    public UserEntity toUserEntity(UserDTO userDTO){
+        return modelMapper.map(userDTO, UserEntity.class);
+    }
+
+    public UserDTO toUserDTO(UserEntity userEntity) {
+        return modelMapper.map(userEntity, UserDTO.class);
+    }
 }
