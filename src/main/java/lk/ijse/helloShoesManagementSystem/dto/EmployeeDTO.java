@@ -2,6 +2,7 @@ package lk.ijse.helloShoesManagementSystem.dto;
 
 import jakarta.validation.constraints.*;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Gender;
+import lk.ijse.helloShoesManagementSystem.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,5 +57,8 @@ public class EmployeeDTO {
 
     @NotBlank(message = "Emergency contact cannot be blank")
     private String emergencyContact;
+
+    @NotNull(message = "Access role cannot be null")
+    private Role accessRole;
 
 }

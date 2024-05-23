@@ -31,52 +31,6 @@ public class Employee {
         return "OK";
     }
 
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<?> saveEmployee(@Valid
-//                                          @RequestParam String name,
-//                                          @RequestPart MultipartFile profilePic,
-//                                          @RequestParam Gender gender,
-//                                          @RequestParam String civilState,
-//                                          @RequestParam String designation,
-//                                          @RequestParam Date dob,
-//                                          @RequestParam Date joinedDate,
-//                                          @RequestParam String address,
-//                                          @RequestParam String contact,
-//                                          @RequestParam String email,
-//                                          @RequestParam String guardian,
-//                                          @RequestParam String emergencyContact,
-//                                          Errors errors){
-//        logger.info("Received request for save a employee");
-//        if (errors.hasFieldErrors()){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                    .body(errors.getFieldErrors().get(0).getDefaultMessage());
-//        }
-//
-//        EmployeeDTO employeeDTO = new EmployeeDTO();
-//        employeeDTO.setName(name);
-//        employeeDTO.setProfilePic(UtilMatters.convertBase64(profilePic));
-//        employeeDTO.setGender(gender);
-//        employeeDTO.setCivilState(civilState);
-//        employeeDTO.setDesignation(designation);
-//        employeeDTO.setDob(dob);
-//        employeeDTO.setJoinedDate(joinedDate);
-//        employeeDTO.setAddress(address);
-//        employeeDTO.setContact(contact);
-//        employeeDTO.setEmail(email);
-//        employeeDTO.setGuardian(guardian);
-//        employeeDTO.setEmergencyContact(emergencyContact);
-//
-//        try {
-//            employeeService.saveEmployee(employeeDTO);
-//            logger.info("Request processed successfully");
-//            return ResponseEntity.status(HttpStatus.CREATED).build();
-//        }catch (Exception e){
-//            logger.error("An exception occurred: {}", e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//
-//    }
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> saveEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,
                                           @RequestPart("profilePicture") MultipartFile profilePicture,
