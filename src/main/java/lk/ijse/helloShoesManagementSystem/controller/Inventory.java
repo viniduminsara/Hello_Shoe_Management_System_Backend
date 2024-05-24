@@ -85,8 +85,6 @@ public class Inventory {
         logger.info("Received request for get All inventories");
         try {
             return ResponseEntity.ok(inventoryService.getSortedInventories(sortBy));
-        }catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }catch (Exception e){
             logger.error("An exception occurred: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
