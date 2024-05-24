@@ -16,4 +16,6 @@ public interface InventoryService {
 
     void updateInventory(String id, InventoryDTO inventoryDTO);
 
+    List<InventoryDTO> getSortedInventories(String sortBy);
+
 }

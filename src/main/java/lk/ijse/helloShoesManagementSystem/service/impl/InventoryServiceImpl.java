@@ -114,6 +114,34 @@ public class InventoryServiceImpl implements InventoryService {
         itemRepo.save(itemEntity);
     }
 
+    @Override
+    public List<InventoryDTO> getSortedInventories(String sortBy) {
+        List<ItemEntity> itemEntities = itemRepo.findAll();
+        if (sortBy != null && !sortBy.isEmpty()) {
+            if (sortBy.equals("price-lowest")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getSellingPrice));
+            } else if (sortBy.equals("price-highest")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getSellingPrice).reversed());
+            } else if (sortBy.equals("name-a")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getItemDesc));
+            } else if (sortBy.equals("name-z")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getItemDesc).reversed());
+            }else if (sortBy.equals("gender-male")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getGender));
+            } else if (sortBy.equals("gender-female")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getGender).reversed());
+            } else if (sortBy.equals("occasion-formal")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getOccasionType));
+            } else if (sortBy.equals("occasion-casual")) {
+                itemEntities.sort(Comparator.comparing(ItemEntity::getOccasionType).reversed());
+            }
+        }
+        List<InventoryDTO> inventoryDTOS = new ArrayList<>();
+        for (ItemEntity itemEntity : itemEntities) {
+            inventoryDTOS.add(convertToInventoryDTO(itemEntity));
+        }
+        return inventoryDTOS;
+    }
 
 
     private InventoryDTO convertToInventoryDTO(ItemEntity itemEntity){

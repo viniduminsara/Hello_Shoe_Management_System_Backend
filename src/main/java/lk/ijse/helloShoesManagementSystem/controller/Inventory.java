@@ -80,6 +80,19 @@ public class Inventory {
         }
     }
 
+    @GetMapping(value = "/sort" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getSortedInventory(@RequestParam("sortBy") String sortBy){
+        logger.info("Received request for get All inventories");
+        try {
+            return ResponseEntity.ok(inventoryService.getSortedInventories(sortBy));
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch (Exception e){
+            logger.error("An exception occurred: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteInventory(@PathVariable("id") String id){
