@@ -13,6 +13,7 @@ public class AdminPanelDTO {
 
     private Double totalSales;
     private Double totalProfit;
+    private Integer totalCustomers;
     private String mostSaleItem;
     private String mostSaleItemPic;
     private List<VerityTypeQuantity> verityTypeQuantities;

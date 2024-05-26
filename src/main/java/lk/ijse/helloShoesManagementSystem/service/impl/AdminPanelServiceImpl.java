@@ -2,6 +2,7 @@ package lk.ijse.helloShoesManagementSystem.service.impl;
 
 import lk.ijse.helloShoesManagementSystem.dto.AdminPanelDTO;
 import lk.ijse.helloShoesManagementSystem.entity.ItemEntity;
+import lk.ijse.helloShoesManagementSystem.repository.CustomerRepo;
 import lk.ijse.helloShoesManagementSystem.repository.ItemRepo;
 import lk.ijse.helloShoesManagementSystem.repository.SaleRepo;
 import lk.ijse.helloShoesManagementSystem.service.AdminPanelService;
@@ -18,6 +19,7 @@ public class AdminPanelServiceImpl implements AdminPanelService {
 
     private final SaleRepo saleRepo;
     private final ItemRepo itemRepo;
+    private final CustomerRepo customerRepo;
 
     @Override
     public AdminPanelDTO getPanelData() {
@@ -25,6 +27,7 @@ public class AdminPanelServiceImpl implements AdminPanelService {
         adminPanelDTO.setTotalProfit(saleRepo.findTotalProfit());
         adminPanelDTO.setTotalSales(saleRepo.findTotalSales());
         adminPanelDTO.setVerityTypeQuantities(itemRepo.getVerityTypeQuantity());
+        adminPanelDTO.setTotalCustomers((int) customerRepo.count());
 
         List<ItemEntity> itemEntities = itemRepo.findMostSoldItems();
         if (!itemEntities.isEmpty()) {
