@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -13,6 +15,6 @@ public class AdminPanelDTO {
     private Double totalProfit;
     private String mostSaleItem;
     private String mostSaleItemPic;
-//    private String mostSaleItemQty;
+    private List<VerityTypeQuantity> verityTypeQuantities;
 
 }

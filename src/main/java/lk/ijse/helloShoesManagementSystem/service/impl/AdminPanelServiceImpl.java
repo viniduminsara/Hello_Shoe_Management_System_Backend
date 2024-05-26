@@ -24,6 +24,7 @@ public class AdminPanelServiceImpl implements AdminPanelService {
         AdminPanelDTO adminPanelDTO = new AdminPanelDTO();
         adminPanelDTO.setTotalProfit(saleRepo.findTotalProfit());
         adminPanelDTO.setTotalSales(saleRepo.findTotalSales());
+        adminPanelDTO.setVerityTypeQuantities(itemRepo.getVerityTypeQuantity());
 
         List<ItemEntity> itemEntities = itemRepo.findMostSoldItems();
         if (!itemEntities.isEmpty()) {
