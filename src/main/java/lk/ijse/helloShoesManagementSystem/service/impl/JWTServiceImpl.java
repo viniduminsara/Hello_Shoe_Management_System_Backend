@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lk.ijse.helloShoesManagementSystem.entity.UserEntity;
 import lk.ijse.helloShoesManagementSystem.service.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,9 @@ public class JWTServiceImpl implements JWTService {
     }
 
     private String generateToken(Map<String,Object> extractClaims, UserDetails userDetails){
+        UserEntity userEntity = (UserEntity) userDetails;
         extractClaims.put("role",userDetails.getAuthorities());
+        extractClaims.put("employeeId",userEntity.getEmployeeEntity().getEmployeeId());
         Date now = new Date();
         Date expire = new Date(now.getTime() + 1000 * 60 * 15);
         Date refreshExpire = new Date(now.getTime() + 1000 * 60 * 60 * 24);

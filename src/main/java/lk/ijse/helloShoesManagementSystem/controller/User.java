@@ -19,7 +19,6 @@ public class User {
     public ResponseEntity<JwtAuthResponse> signUp(@RequestBody SignUp signUpReq) {
         return ResponseEntity.ok(authenticationService.signUp(signUpReq));
     }
-    //signIn
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthResponse> signIn(@RequestBody SignIn signInReq) {
         return ResponseEntity.ok(authenticationService.signIn(signInReq));
@@ -28,5 +27,4 @@ public class User {
     public ResponseEntity<JwtAuthResponse> refreshToken(@RequestParam("refreshToken") String refreshToken) {
         return ResponseEntity.ok(authenticationService.refreshToken(refreshToken));
     }
-
 }
