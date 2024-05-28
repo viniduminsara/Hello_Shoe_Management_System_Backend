@@ -30,7 +30,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public void saveSale(SaleDTO saleDTO) {
         saleDTO.setOrderId(UUID.randomUUID().toString());
-        UserEntity userEntity = userRepo.findById(saleDTO.getUserId())
+        UserEntity userEntity = userRepo.findByEmployeeId(saleDTO.getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         CustomerEntity customerEntity = customerRepo.findById(saleDTO.getCustomerId())
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
