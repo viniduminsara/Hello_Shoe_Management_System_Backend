@@ -55,7 +55,7 @@ public class Customer {
         }
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getSelectedCustomer(@PathVariable("id") String id){
         logger.info("Received request for get a customer");
         try {
@@ -105,6 +105,17 @@ public class Customer {
         }
     }
 
-
+    @GetMapping(value = "/contact", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getCustomerByContact(@RequestParam("contact") String contact){
+        logger.info("Received request for get a customer");
+        try {
+            return ResponseEntity.ok(customerService.getCustomerByContact(contact));
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }catch (Exception e){
+            logger.error("An exception occurred: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 }

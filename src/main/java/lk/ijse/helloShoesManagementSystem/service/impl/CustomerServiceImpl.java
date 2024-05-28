@@ -60,4 +60,10 @@ public class CustomerServiceImpl implements CustomerService {
         customerEntity.get().setEmail(customerDTO.getEmail());
     }
 
+    @Override
+    public CustomerDTO getCustomerByContact(String contact) {
+        return mapper.toCustomerDTO(customerRepo.findByContact(contact)
+                .orElseThrow(() -> new NotFoundException("Customer not Found")));
+    }
+
 }

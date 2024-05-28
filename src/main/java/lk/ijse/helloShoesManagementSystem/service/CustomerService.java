@@ -16,4 +16,6 @@ public interface CustomerService {
 
     void updateCustomer(String id, CustomerDTO customerDTO);
 
+    CustomerDTO getCustomerByContact(String contact);
+
 }

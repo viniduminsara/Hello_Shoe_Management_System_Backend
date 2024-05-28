@@ -32,8 +32,11 @@ public class SaleServiceImpl implements SaleService {
         saleDTO.setOrderId(UUID.randomUUID().toString());
         UserEntity userEntity = userRepo.findByEmployeeId(saleDTO.getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
-        CustomerEntity customerEntity = customerRepo.findById(saleDTO.getCustomerId())
-                .orElseThrow(() -> new NotFoundException("Customer not found"));
+        CustomerEntity customerEntity = null;
+        if (saleDTO.getCustomerId() != null) {
+            customerEntity = customerRepo.findById(saleDTO.getCustomerId())
+                    .orElseThrow(() -> new NotFoundException("Customer not found"));
+        }
 
         SaleEntity saleEntity = mapper.toSaleEntity(saleDTO);
         saleEntity.setCustomer(customerEntity);

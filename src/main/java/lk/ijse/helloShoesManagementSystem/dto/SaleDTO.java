@@ -20,7 +20,6 @@ public class SaleDTO {
     @Null
     private String orderId;
 
-    @NotBlank(message = "Customer Id cannot be blank")
     private String customerId;
 
     @NotNull(message = "Total Price cannot be null")
