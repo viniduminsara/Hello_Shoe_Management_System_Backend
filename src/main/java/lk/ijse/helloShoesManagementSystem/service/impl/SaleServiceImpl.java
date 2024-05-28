@@ -58,6 +58,11 @@ public class SaleServiceImpl implements SaleService {
 
     }
 
+    @Override
+    public List<SaleDTO> getAllSales() {
+        return mapper.toSaleDTOList(saleRepo.findAll());
+    }
+
     private static SaleDetailsEntity getSaleDetailsEntity(OrderItem orderItem, SaleEntity saleEntity, ItemSizeEntity itemSizeEntity) {
         SaleDetailsKey saleDetailsKey = new SaleDetailsKey();
         saleDetailsKey.setOrderId(saleEntity.getOrderId());

@@ -65,6 +65,10 @@ public class Mapper {
         return modelMapper.map(saleDTO, SaleEntity.class);
     }
 
+    public List<SaleDTO> toSaleDTOList(List<SaleEntity> saleEntities){
+        return modelMapper.map(saleEntities, List.class);
+    }
+
     //User
     public UserEntity toUserEntity(UserDTO userDTO){
         return modelMapper.map(userDTO, UserEntity.class);
