@@ -20,7 +20,7 @@ public class RefundEntity {
     private Double amount;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderId")
-    private SaleEntity saleEntity;
+    @JoinColumn(name = "saleDetailsId")
+    private SaleDetailsEntity saleEntity;
 
 }

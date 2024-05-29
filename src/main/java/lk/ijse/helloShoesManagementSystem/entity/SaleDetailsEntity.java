@@ -13,17 +13,19 @@ import lombok.*;
 @Table(name = "sale_details")
 public class SaleDetailsEntity {
 
-    @EmbeddedId
-    private SaleDetailsKey id;
+//    @EmbeddedId
+//    private SaleDetailsKey id;
+    @Id
+    private String saleDetailsId;
 
     @ManyToOne
-    @MapsId("orderId")
+//    @MapsId("orderId")
     @JoinColumn(name = "orderId")
     @JsonBackReference
     private SaleEntity saleEntity;
 
     @ManyToOne
-    @MapsId("itemSizeId")
+//    @MapsId("itemSizeId")
     @JoinColumn(name = "itemSizeId")
     @JsonBackReference
     private ItemSizeEntity itemSizeEntity;
