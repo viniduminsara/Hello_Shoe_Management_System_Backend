@@ -52,4 +52,16 @@ public class Sale {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping(value = "/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getSelectedSale(@PathVariable("orderId") String orderId){
+        logger.info("Received request for get All sale's items");
+        try {
+            return ResponseEntity.ok(saleService.getSelectedSale(orderId));
+        }catch (Exception e){
+            logger.error("An exception occurred: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

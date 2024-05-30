@@ -2,6 +2,7 @@ package lk.ijse.helloShoesManagementSystem.service.impl;
 
 import lk.ijse.helloShoesManagementSystem.dto.OrderItem;
 import lk.ijse.helloShoesManagementSystem.dto.SaleDTO;
+import lk.ijse.helloShoesManagementSystem.dto.SaleDetailsDTO;
 import lk.ijse.helloShoesManagementSystem.entity.*;
 import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.repository.*;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public void saveSale(SaleDTO saleDTO) {
-        saleDTO.setOrderId(UUID.randomUUID().toString());
+        saleDTO.setOrderId(generateNextOrderId());
         UserEntity userEntity = userRepo.findByEmployeeId(saleDTO.getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
         CustomerEntity customerEntity = null;
@@ -63,18 +65,44 @@ public class SaleServiceImpl implements SaleService {
         return mapper.toSaleDTOList(saleRepo.findAll());
     }
 
-    private static SaleDetailsEntity getSaleDetailsEntity(OrderItem orderItem, SaleEntity saleEntity, ItemSizeEntity itemSizeEntity) {
-        SaleDetailsKey saleDetailsKey = new SaleDetailsKey();
-        saleDetailsKey.setOrderId(saleEntity.getOrderId());
-        saleDetailsKey.setItemSizeId(itemSizeEntity.getItemSizeId());
+    @Override
+    public List<SaleDetailsDTO> getSelectedSale(String id) {
+        List<SaleDetailsEntity> saleDetailsEntities = saleDetailsRepo.findSaleDetailsByOrderId(id);
+        if (saleDetailsEntities.isEmpty()) throw new NotFoundException("Sale Details not found");
+        List<SaleDetailsDTO> saleDetailsDTOS = new ArrayList<>();
+        for (SaleDetailsEntity saleDetailsEntity : saleDetailsEntities) {
+            SaleDetailsDTO saleDetailsDTO = new SaleDetailsDTO();
+            saleDetailsDTO.setItemCode(saleDetailsEntity.getItemSizeEntity().getItemEntity().getItemCode());
+            saleDetailsDTO.setItemDesc(saleDetailsEntity.getItemSizeEntity().getItemEntity().getItemDesc());
+            saleDetailsDTO.setItemPic(saleDetailsEntity.getItemSizeEntity().getItemEntity().getItemPic());
+            saleDetailsDTO.setItemSizeId(saleDetailsEntity.getItemSizeEntity().getItemSizeId());
+            saleDetailsDTO.setSize(saleDetailsEntity.getItemSizeEntity().getSizeEntity().getSize());
+            saleDetailsDTO.setQty(saleDetailsEntity.getQty());
+            saleDetailsDTO.setUnitPrice(saleDetailsEntity.getUnitPrice());
+            saleDetailsDTOS.add(saleDetailsDTO);
+        }
+        return saleDetailsDTOS;
+    }
 
+    private static SaleDetailsEntity getSaleDetailsEntity(OrderItem orderItem, SaleEntity saleEntity, ItemSizeEntity itemSizeEntity) {
         SaleDetailsEntity saleDetailsEntity = new SaleDetailsEntity();
-        saleDetailsEntity.setId(saleDetailsKey);
+        saleDetailsEntity.setSaleDetailsId(UUID.randomUUID().toString());
         saleDetailsEntity.setSaleEntity(saleEntity);
         saleDetailsEntity.setItemSizeEntity(itemSizeEntity);
         saleDetailsEntity.setQty(orderItem.getItemQty());
         saleDetailsEntity.setUnitPrice(orderItem.getUnitPrice());
         return saleDetailsEntity;
+    }
+
+    public String generateNextOrderId() {
+        String maxOrderId = saleRepo.findLastOrderId();
+        if (maxOrderId == null) {
+            return "ORD-000001";
+        }
+
+        int lastNumber = Integer.parseInt(maxOrderId.substring(4));
+        int nextNumber = lastNumber + 1;
+        return String.format("ORD-%06d", nextNumber);
     }
 }
 
