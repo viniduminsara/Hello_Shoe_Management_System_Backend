@@ -3,15 +3,20 @@ package lk.ijse.helloShoesManagementSystem.controller;
 import lk.ijse.helloShoesManagementSystem.dto.CustomerDTO;
 import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.service.CustomerService;
+import lk.ijse.helloShoesManagementSystem.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/customer")
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class Customer {
 
     private final CustomerService customerService;
+    private final EmailService emailService;
     private static final Logger logger = LoggerFactory.getLogger(Customer.class);
 
     @GetMapping("/health")
@@ -115,6 +121,21 @@ public class Customer {
         }catch (Exception e){
             logger.error("An exception occurred: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void sendBirthdayWishes() {
+        LocalDate today = LocalDate.now();
+        List<CustomerDTO> customers = customerService.getAllCustomers();
+
+        for (CustomerDTO customer : customers) {
+            if (customer.getDob().toLocalDate().equals(today)) {
+                String email = customer.getEmail();
+                String subject = "Happy Birthday!";
+                String text = "Dear " + customer.getName() + ",\n\nWishing you a very happy birthday!\n\nBest regards,\nYour Company Name";
+                emailService.sendEmail(email, subject, text);
+            }
         }
     }
 
