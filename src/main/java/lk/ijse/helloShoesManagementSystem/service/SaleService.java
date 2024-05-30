@@ -1,5 +1,6 @@
 package lk.ijse.helloShoesManagementSystem.service;
 
+import lk.ijse.helloShoesManagementSystem.dto.RefundDTO;
 import lk.ijse.helloShoesManagementSystem.dto.SaleDTO;
 import lk.ijse.helloShoesManagementSystem.dto.SaleDetailsDTO;
 
@@ -12,5 +13,7 @@ public interface SaleService {
     List<SaleDTO> getAllSales();
 
     List<SaleDetailsDTO> getSelectedSale(String id);
+
+    void saveRefund(RefundDTO refundDTO);
 
 }

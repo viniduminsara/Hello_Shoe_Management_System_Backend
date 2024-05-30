@@ -21,6 +21,6 @@ public class RefundEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "saleDetailsId")
-    private SaleDetailsEntity saleEntity;
+    private SaleDetailsEntity saleDetailsEntity;
 
 }

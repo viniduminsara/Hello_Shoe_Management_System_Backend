@@ -81,4 +81,9 @@ public class Mapper {
     public UserDTO toUserDTO(UserEntity userEntity) {
         return modelMapper.map(userEntity, UserDTO.class);
     }
+
+    //Refund
+    public RefundEntity toRefundEntity(RefundDTO refundDTO){
+        return modelMapper.map(refundDTO, RefundEntity.class);
+    }
 }

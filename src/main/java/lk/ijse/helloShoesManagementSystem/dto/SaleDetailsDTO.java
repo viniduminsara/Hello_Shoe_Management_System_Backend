@@ -22,7 +22,7 @@ public class SaleDetailsDTO {
     private String itemPic;
 
     @NotBlank(message = "Item Id cannot be blank")
-    private String itemSizeId;
+    private String saleDetailsId;
 
     @NotBlank(message = "Size Id cannot be blank")
     private Integer size;
