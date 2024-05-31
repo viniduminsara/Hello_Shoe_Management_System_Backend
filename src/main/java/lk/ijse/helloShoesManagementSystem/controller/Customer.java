@@ -1,6 +1,7 @@
 package lk.ijse.helloShoesManagementSystem.controller;
 
 import lk.ijse.helloShoesManagementSystem.dto.CustomerDTO;
+import lk.ijse.helloShoesManagementSystem.exception.DuplicateException;
 import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.service.CustomerService;
 import lk.ijse.helloShoesManagementSystem.service.EmailService;
@@ -44,6 +45,9 @@ public class Customer {
             customerService.saveCustomer(customerDTO);
             logger.info("Request processed successfully");
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (DuplicateException e){
+            logger.error("Duplicate contact error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch (Exception e){
             logger.error("An exception occurred: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

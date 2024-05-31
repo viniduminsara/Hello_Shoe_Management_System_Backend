@@ -2,11 +2,13 @@ package lk.ijse.helloShoesManagementSystem.dto;
 
 import jakarta.validation.constraints.*;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Gender;
+import lk.ijse.helloShoesManagementSystem.entity.enums.Level;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,8 +44,13 @@ public class CustomerDTO {
     @NotBlank(message = "Email cannot be blank")
     private String email;
 
-    //TODO: get tha last purchase date with sale entity
     @Null
-    private Date lastSaleDate;
+    private Double totalPoints;
+
+    @Null
+    private Timestamp lastSaleDate;
+
+    @Null
+    private Level level;
 
 }

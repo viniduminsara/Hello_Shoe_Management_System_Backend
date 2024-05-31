@@ -29,6 +29,7 @@ public class EmployeeEntity {
     private Date joinedDate;
     private String address;
     private String contact;
+    @Column(unique = true)
     private String email;
     private String guardian;
     private String emergencyContact;

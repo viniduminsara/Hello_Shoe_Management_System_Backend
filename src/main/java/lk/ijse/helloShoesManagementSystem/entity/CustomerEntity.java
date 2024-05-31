@@ -25,6 +25,7 @@ public class CustomerEntity {
     private Date joinedDate;
     private Date dob;
     private String address;
+    @Column(unique = true)
     private String contact;
     private String email;
 

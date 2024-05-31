@@ -2,6 +2,8 @@ package lk.ijse.helloShoesManagementSystem.service.impl;
 
 import lk.ijse.helloShoesManagementSystem.dto.CustomerDTO;
 import lk.ijse.helloShoesManagementSystem.entity.CustomerEntity;
+import lk.ijse.helloShoesManagementSystem.entity.enums.Level;
+import lk.ijse.helloShoesManagementSystem.exception.DuplicateException;
 import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.repository.CustomerRepo;
 import lk.ijse.helloShoesManagementSystem.service.CustomerService;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +29,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void saveCustomer(CustomerDTO customerDTO) {
+        if (customerRepo.findByContact(customerDTO.getContact()).isPresent()){
+            throw new DuplicateException("A customer with this contact number already exists");
+        }
         customerDTO.setCustomerId(UUID.randomUUID().toString());
         customerDTO.setJoinedDate(Date.valueOf(LocalDate.now()));
         customerRepo.save(mapper.toCustomerEntity(customerDTO));
@@ -33,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
-        return mapper.toCustomerDTOList(customerRepo.findAll());
+        return convertToCustomerDTOList(customerRepo.findAll());
     }
 
     @Override
@@ -64,6 +70,43 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO getCustomerByContact(String contact) {
         return mapper.toCustomerDTO(customerRepo.findByContact(contact)
                 .orElseThrow(() -> new NotFoundException("Customer not Found")));
+    }
+
+    private List<CustomerDTO> convertToCustomerDTOList(List<CustomerEntity> customerEntities) {
+        List<CustomerDTO> customerDTOS = new ArrayList<>();
+        for (CustomerEntity customerEntity : customerEntities) {
+            CustomerDTO customerDTO = new CustomerDTO();
+            customerDTO.setCustomerId(customerEntity.getCustomerId());
+            customerDTO.setAddress(customerEntity.getAddress());
+            customerDTO.setContact(customerEntity.getContact());
+            customerDTO.setDob(customerEntity.getDob());
+            customerDTO.setEmail(customerEntity.getEmail());
+            customerDTO.setGender(customerEntity.getGender());
+            customerDTO.setJoinedDate(customerEntity.getJoinedDate());
+            customerDTO.setName(customerEntity.getName());
+
+            Double totalPoints = customerRepo.findTotalPointsByCustomerId(customerEntity.getCustomerId());
+            if (totalPoints == null) {
+                totalPoints = 0.0;
+            }
+            customerDTO.setTotalPoints(totalPoints);
+            customerDTO.setLevel(getCustomerLevel(totalPoints));
+            customerDTO.setLastSaleDate(customerRepo.findLastSaleDateByCustomerId(customerEntity.getCustomerId()));
+            customerDTOS.add(customerDTO);
+        }
+        return customerDTOS;
+    }
+
+    public Level getCustomerLevel(Double totalPoints) {
+        if (totalPoints > 200) {
+            return Level.GOLD;
+        } else if (totalPoints >= 100) {
+            return Level.SILVER;
+        } else if (totalPoints >= 50) {
+            return Level.BRONZE;
+        } else {
+            return Level.NEW;
+        }
     }
 
 }
