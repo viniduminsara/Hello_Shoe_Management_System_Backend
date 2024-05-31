@@ -63,7 +63,7 @@ To get started with the Hello Shoes Management System, follow these steps:
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/yourusername/helloshoes-management-system.git
+    git clone https://github.com/viniduminsara/Hello_Shoe_Management_System_Backend.git
     ```
 
 2. **Navigate to the Project Directory**:
