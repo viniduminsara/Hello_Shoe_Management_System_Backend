@@ -1,6 +1,7 @@
 package lk.ijse.helloShoesManagementSystem.entity;
 
 import jakarta.persistence.*;
+import lk.ijse.helloShoesManagementSystem.entity.enums.Branch;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Gender;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Role;
 import lombok.*;
@@ -33,6 +34,8 @@ public class EmployeeEntity {
     private String email;
     private String guardian;
     private String emergencyContact;
+    @Enumerated(EnumType.STRING)
+    private Branch branch;
     @Enumerated(EnumType.STRING)
     private Role accessRole;
 
