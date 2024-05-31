@@ -2,6 +2,7 @@ package lk.ijse.helloShoesManagementSystem.service.impl;
 
 import lk.ijse.helloShoesManagementSystem.dto.EmployeeDTO;
 import lk.ijse.helloShoesManagementSystem.entity.EmployeeEntity;
+import lk.ijse.helloShoesManagementSystem.exception.DuplicateException;
 import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.repository.EmployeeRepo;
 import lk.ijse.helloShoesManagementSystem.service.EmployeeService;
@@ -24,6 +25,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void saveEmployee(EmployeeDTO employeeDTO) {
+        if (employeeRepo.findByEmail(employeeDTO.getEmail()).isPresent()){
+            throw new DuplicateException("A employee with this email already exists");
+        }
         employeeDTO.setEmployeeId(UUID.randomUUID().toString());
         employeeRepo.save(mapper.toEmployeeEntity(employeeDTO));
     }
@@ -50,7 +54,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Optional<EmployeeEntity> employeeEntity = employeeRepo.findById(id);
         if (employeeEntity.isEmpty()) throw new NotFoundException("Employee not found");
         employeeEntity.get().setName(employeeDTO.getName());
-//        employeeEntity.get().setProfilePic(employeeDTO.getProfilePic());
         employeeEntity.get().setGender(employeeDTO.getGender());
         employeeEntity.get().setCivilState(employeeDTO.getCivilState());
         employeeEntity.get().setDesignation(employeeDTO.getDesignation());

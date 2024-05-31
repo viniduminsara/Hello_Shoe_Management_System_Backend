@@ -3,6 +3,7 @@ package lk.ijse.helloShoesManagementSystem.controller;
 import jakarta.validation.Valid;
 import lk.ijse.helloShoesManagementSystem.dto.EmployeeDTO;
 import lk.ijse.helloShoesManagementSystem.entity.enums.Gender;
+import lk.ijse.helloShoesManagementSystem.exception.DuplicateException;
 import lk.ijse.helloShoesManagementSystem.exception.NotFoundException;
 import lk.ijse.helloShoesManagementSystem.service.EmployeeService;
 import lk.ijse.helloShoesManagementSystem.util.UtilMatters;
@@ -49,6 +50,9 @@ public class Employee {
             employeeService.saveEmployee(employeeDTO);
             logger.info("Request processed successfully");
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (DuplicateException e){
+            logger.error("Duplicate email error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (Exception e) {
             logger.error("An exception occurred: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
